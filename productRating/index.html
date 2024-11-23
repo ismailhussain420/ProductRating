@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Rating System</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #000;
+}
+
+.rating-container {
+  text-align: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stars {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.star {
+  font-size: 2em;
+  color: lightgray;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star:hover,
+.star.active {
+  color: gold;
+}
+
+.rating-output {
+  font-size: 1.2em;
+}
+
+  </style>
+</head>
+<body>
+  <div class="rating-container">
+    <h2>Rate this Product</h2>
+    <div class="stars">
+      <i class="star" data-value="1">&#9733;</i>
+      <i class="star" data-value="2">&#9733;</i>
+      <i class="star" data-value="3">&#9733;</i>
+      <i class="star" data-value="4">&#9733;</i>
+      <i class="star" data-value="5">&#9733;</i>
+    </div>
+    <p class="rating-output">Rating: 0</p>
+  </div>
+  <script>
+
+const stars = document.querySelectorAll(".star");
+const rating_output = document.querySelector(".rating-output");
+
+// Get stored rating or set to 0 if not available
+const storageLcl = localStorage.getItem('productRating') || 0;
+starFunc(storageLcl);
+rating_output.textContent = `Rating: ${storageLcl}`;
+
+stars.forEach(star => {
+  // Add click event to each star
+  star.addEventListener("click", function() {
+    // Get the rating value from the clicked star
+    const ratingValue = this.getAttribute('data-value');
+    
+    // Store the new rating in localStorage
+    localStorage.setItem('productRating', ratingValue);
+
+    // Update stars based on the new rating
+    starFunc(ratingValue);
+    
+    // Update rating output
+    rating_output.textContent = `Rating: ${ratingValue}`;
+  });
+});
+
+// Function to update stars based on rating
+function starFunc(ratingValue) {
+  stars.forEach(star => {
+    const starValue = star.getAttribute('data-value');
+    if (starValue <= ratingValue) {
+      star.classList.add('active');
+    } else {
+      star.classList.remove('active');
+    }
+  });
+}
+
+
+
+  </script>
+</body>
+</html>
